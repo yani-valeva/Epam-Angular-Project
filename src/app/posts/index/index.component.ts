@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Post } from './../../posts';
 import { map } from 'rxjs/internal/operators';
-import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-index',
@@ -28,4 +29,7 @@ export class IndexComponent implements OnInit {
       });
   }
 
+  deletePost(postId) {
+    this.items = this.items.filter(p => p.id !== postId);
+  }
 }
