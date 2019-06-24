@@ -1,3 +1,18 @@
-<p>
-  index works!
-</p>
+<table *ngIf="items">
+  <tr>
+    <th>Id</th>
+    <th>Title</th>
+    <th>Body</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let item of items">
+    <td>{{ item.id }}</td>
+    <td>{{ item.title }}</td>
+    <td>{{ item.body }}</td>
+    <td>
+      <button>Details</button>
+      <button>Edit</button>
+      <button>Delete</button>
+    </td>
+  </tr>
+</table>
