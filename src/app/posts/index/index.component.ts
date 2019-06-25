@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Post } from './../../posts';
+import { Post } from '../../post';
 import { map } from 'rxjs/internal/operators';
 
 
@@ -13,8 +13,11 @@ import { map } from 'rxjs/internal/operators';
 export class IndexComponent implements OnInit {
   items: Post[] = [];
 
-  constructor(private httpClient: HttpClient, private route: ActivatedRoute,
-    private router: Router) { }
+  constructor(
+    private httpClient: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.httpClient.get('https://jsonplaceholder.typicode.com/posts/')
@@ -28,19 +31,25 @@ export class IndexComponent implements OnInit {
       }))
       .subscribe((res: Post[]) => {
         this.items = res;
-        console.log(this.items,'ha')
       });
   }
 
   deletePost(postId) {
     let result = confirm('Are you sure you want to delete this post?');
-    
+
     if (result) {
-      this.items = this.items.filter(p => p.id !== postId);
+      this.httpClient.delete('https://jsonplaceholder.typicode.com/posts/' + postId)
+        .subscribe(() => {
+          this.items = this.items.filter(p => p.id !== postId);
+        });
     }
   }
 
   viewDetails(post) {
     this.router.navigate(['posts/details/' + post.id]);
+  }
+
+  addPost() {
+    this.router.navigate(['posts/add']);
   }
 }

@@ -1,5 +1,5 @@
-<div class="view-container">
-  <span>Id: {{ items.id }}</span>
-  <h3>Title: {{ items.title }}</h3>
-  <p>Description: {{ items.body }}</p>
+<div *ngIf="post" class="view-container">
+  <span>Id: {{ post.id }}</span>
+  <h3>Title: {{ post.title }}</h3>
+  <p>Description: {{ post.body }}</p>
 </div>

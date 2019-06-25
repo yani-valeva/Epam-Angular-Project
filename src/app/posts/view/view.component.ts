@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from './../../posts';
+import { Post } from '../../post';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/internal/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-view',
@@ -8,15 +10,22 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./view.component.scss']
 })
 export class ViewComponent implements OnInit {
-  items: Post[] = [];
-  id: number = Number(window.location.href.split('/').slice(-1).pop());
+  post: Post;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.httpClient.get('https://jsonplaceholder.typicode.com/posts/'+this.id)
-    .subscribe((res: Post[]) => {
-      this.items = res;
-    });
+    const id = this.activatedRoute.snapshot.params.id;
+    
+    this.httpClient.get('https://jsonplaceholder.typicode.com/posts/' + id)
+      .pipe(map((res: any) => {
+        return new Post(res);
+      }))
+      .subscribe((res: Post) => {
+        this.post = res;
+      });
   }
 }
