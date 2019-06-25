@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Post } from './../../posts';
 import { map } from 'rxjs/internal/operators';
 
@@ -12,7 +13,8 @@ import { map } from 'rxjs/internal/operators';
 export class IndexComponent implements OnInit {
   items: Post[] = [];
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.httpClient.get('https://jsonplaceholder.typicode.com/posts/')
@@ -26,10 +28,15 @@ export class IndexComponent implements OnInit {
       }))
       .subscribe((res: Post[]) => {
         this.items = res;
+        console.log(this.items,'ha')
       });
   }
 
   deletePost(postId) {
     this.items = this.items.filter(p => p.id !== postId);
+  }
+
+  viewDetails(post) {
+    this.router.navigate(['posts/details/' + post.id]);
   }
 }

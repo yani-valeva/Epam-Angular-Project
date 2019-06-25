@@ -13,7 +13,7 @@
     <td>{{ item.body }}</td>
     <td>{{ item.userId }}</td>
     <td>
-      <button>Details</button>
+      <button (click)="viewDetails(item)">Details</button>
       <button>Edit</button>
       <button (click)="deletePost(item.id)">Delete</button>
     </td>
