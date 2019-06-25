@@ -33,7 +33,11 @@ export class IndexComponent implements OnInit {
   }
 
   deletePost(postId) {
-    this.items = this.items.filter(p => p.id !== postId);
+    let result = confirm('Are you sure you want to delete this post?');
+    
+    if (result) {
+      this.items = this.items.filter(p => p.id !== postId);
+    }
   }
 
   viewDetails(post) {
