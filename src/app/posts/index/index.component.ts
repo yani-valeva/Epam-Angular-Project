@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Post } from '../../post';
 import { map } from 'rxjs/internal/operators';
 
@@ -15,7 +15,6 @@ export class IndexComponent implements OnInit {
 
   constructor(
     private httpClient: HttpClient,
-    private route: ActivatedRoute,
     private router: Router
   ) { }
 
