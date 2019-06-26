@@ -17,7 +17,7 @@ export class AddComponent implements OnInit {
   constructor(
     private httpClient: HttpClient,
     private router: Router
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.profileForm = new FormGroup({
@@ -45,7 +45,10 @@ export class AddComponent implements OnInit {
     let newPost = this.profileForm.value;
     newPost.id = this.items[postsCount - 1].id + 1;
     if (newPost.title.length > 5 && newPost.description.length > 10 && !isNaN(Number(newPost.userId))) {
-      this.httpClient.post('https://jsonplaceholder.typicode.com/posts', newPost);
+      this.httpClient.post('https://jsonplaceholder.typicode.com/posts', newPost)
+        .subscribe((res: Post[]) => {
+          this.items = res;
+        });
       this.router.navigate(['posts']);
     }
   }
