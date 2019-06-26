@@ -1,3 +1,16 @@
-<p>
-  edit works!
-</p>
+<form *ngIf="post" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <label>
+    Title:
+    <input type=" text" formControlName="title" id="title">
+  </label>
+  <label>
+    Description:
+    <input type="text" formControlName="description">
+  </label>
+  <label>
+    User Id:
+    <input type="text" formControlName="userId">
+  </label>
+  <button type="button" [disabled]="!profileForm.valid" (click)="redirectToIndex()">Cancel</button>
+  <button type="button" [disabled]="!profileForm.valid" (click)="updatePost(post)">Update</button>
+</form>

@@ -51,4 +51,8 @@ export class IndexComponent implements OnInit {
   addPost() {
     this.router.navigate(['posts/add']);
   }
+
+  editPost(post) {
+    this.router.navigate(['posts/edit/' + post.id]);
+  }
 }

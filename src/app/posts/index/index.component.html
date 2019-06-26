@@ -16,7 +16,7 @@
     <td>{{ item.userId }}</td>
     <td>
       <button (click)="viewDetails(item)">Details</button>
-      <button>Edit</button>
+      <button (click)="editPost(item)">Edit</button>
       <button (click)="deletePost(item.id)">Delete</button>
     </td>
   </tr>
