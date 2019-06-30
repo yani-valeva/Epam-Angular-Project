@@ -49,9 +49,8 @@ export class EditComponent implements OnInit {
       this.httpClient.put('https://jsonplaceholder.typicode.com/posts/' + post.id, newPost)
         .subscribe((res: any) => {
           this.post = res;
+          this.router.navigate(['posts']);
         })
-
-        this.router.navigate(['posts']);
       } else {
         alert('Please enter valid data!');
       }

@@ -48,8 +48,8 @@ export class AddComponent implements OnInit {
       this.httpClient.post('https://jsonplaceholder.typicode.com/posts', newPost)
         .subscribe((res: Post[]) => {
           this.items = res;
+          this.router.navigate(['posts']);
         });
-      this.router.navigate(['posts']);
     }
   }
 }
