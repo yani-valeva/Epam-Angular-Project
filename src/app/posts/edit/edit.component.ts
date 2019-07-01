@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Post } from '../../post';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/internal/operators';
@@ -17,7 +17,8 @@ export class EditComponent implements OnInit {
   constructor(
     private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -28,11 +29,12 @@ export class EditComponent implements OnInit {
         return new Post(res);
       }))
       .subscribe((res: Post) => {
-        this.profileForm = new FormGroup({
-          title: new FormControl(res.title),
-          description: new FormControl(res.body),
-          userId: new FormControl(res.userId)
+        this.profileForm = this.formBuilder.group({
+          title: [res.title, [Validators.required, Validators.minLength(5)]],
+          description: [res.body, [Validators.required, Validators.minLength(10)]],
+          userId: [res.userId, [Validators.required, Validators.pattern("^[0-9]*$")]]
         });
+
         this.post = res;
       });
   }
@@ -41,12 +43,11 @@ export class EditComponent implements OnInit {
     this.router.navigate(['posts']);
   }
 
-  updatePost(post) {
-    let newPost = this.profileForm.value
-    newPost.id = post.id;
-    console.log(newPost, 'ys');
-    if (newPost.title.length > 5 && newPost.description.length > 10 && !isNaN(Number(newPost.userId))) {
-      this.httpClient.put('https://jsonplaceholder.typicode.com/posts/' + post.id, newPost)
+  onSubmit() {
+    let newPost = this.profileForm.value;
+
+    if (this.profileForm.valid) {
+      this.httpClient.put('https://jsonplaceholder.typicode.com/posts/' + this.post.id, newPost)
         .subscribe((res: any) => {
           this.post = res;
           this.router.navigate(['posts']);

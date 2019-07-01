@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Post } from '../../post';
 import { map } from 'rxjs/internal/operators';
 import { HttpClient } from '@angular/common/http';
@@ -16,14 +16,15 @@ export class AddComponent implements OnInit {
 
   constructor(
     private httpClient: HttpClient,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {
-    this.profileForm = new FormGroup({
-      title: new FormControl(''),
-      description: new FormControl(''),
-      userId: new FormControl('')
+    this.profileForm = this.formBuilder.group({
+      title: ['', [Validators.required, Validators.minLength(5)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      userId: ['', [Validators.required, Validators.pattern("^[0-9]*$")]]
     });
 
     this.httpClient.get('https://jsonplaceholder.typicode.com/posts/')
@@ -41,11 +42,8 @@ export class AddComponent implements OnInit {
   }
 
   onSubmit() {
-    const postsCount = this.items.length;
-    let newPost = this.profileForm.value;
-    newPost.id = this.items[postsCount - 1].id + 1;
-    if (newPost.title.length > 5 && newPost.description.length > 10 && !isNaN(Number(newPost.userId))) {
-      this.httpClient.post('https://jsonplaceholder.typicode.com/posts', newPost)
+    if (this.profileForm.valid) {
+      this.httpClient.post('https://jsonplaceholder.typicode.com/posts', this.profileForm.value)
         .subscribe((res: Post[]) => {
           this.items = res;
           this.router.navigate(['posts']);
