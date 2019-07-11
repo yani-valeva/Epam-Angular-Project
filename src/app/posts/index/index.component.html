@@ -1,0 +1,23 @@
+<div class="add-container">
+  <button (click)="addPost()">Add post</button>
+</div>
+<table *ngIf="items">
+  <tr>
+    <th>Id</th>
+    <th>Title</th>
+    <th>Body</th>
+    <th>User Id</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let item of items">
+    <td>{{ item.id }}</td>
+    <td>{{ item.title }}</td>
+    <td>{{ item.body }}</td>
+    <td>{{ item.userId }}</td>
+    <td>
+      <button (click)="viewDetails(item)">Details</button>
+      <button (click)="editPost(item)">Edit</button>
+      <button (click)="deletePost(item.id)">Delete</button>
+    </td>
+  </tr>
+</table>
